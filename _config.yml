@@ -23,6 +23,7 @@ cover_color: blue
 
 # Navigation buttons in the front page.
 nav:
+    - {title: Homepage, description: all, url: '/'}
     - {title: All Blogs, description: all, url: '/archive'}
     - {title: Category, description: tags, url: '/tags'}
     # - {title: Message, description: messages, url: '/message'}

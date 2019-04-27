@@ -136,7 +136,7 @@
 // ------------------------------
 
 .cover-blue {
-  @include linear-gradient(140deg, rgba($blue,.6) 100%, rgba(darken($blue, 20%), .8));
+  @include linear-gradient(140deg, rgba($blue,.3) 100%, rgba(darken($blue, 20%), .8));
 }
 
 .cover-green {
