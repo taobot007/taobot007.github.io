@@ -4,7 +4,7 @@
   {% if site.social.weibo %}
   <!-- Weibo -->
   <li class="navigation__item">
-    <a href="http://weibo.com/{{site.social.weibo}}" title="@{{site.social.weibo}} 的微博" target="_blank">
+    <a href="http://weibo.com/{{site.social.weibo}}" title="@{{site.social.weibo}}" target="_blank">
       <i class='social fa fa-weibo'></i>
       <span class="label">Weibo</span>
     </a>
@@ -14,13 +14,13 @@
   {% if site.social.github %}
   <!-- Github -->
   <li class="navigation__item">
-    <a href="https://github.com/{{site.social.github}}" title="@{{site.social.github}} 的 Github" target="_blank">
+    <a href="https://github.com/{{site.social.github}}" title="@{{site.social.github}} Github" target="_blank">
       <i class='social fa fa-github'></i>
       <span class="label">Github</span>
     </a>
   </li>
   {% endif %}
-  
+
   {% if site.social.twitter %}
   <!-- Twitter -->
   <li class="navigation__item">
@@ -41,6 +41,7 @@
   </li>
   {% endif %}
 
+  {% if site.social.rss %}
   <!-- RSS -->
   <li class="navigation__item">
     <a href="/feed.xml" rel="author" title="RSS" target="_blank">
@@ -48,6 +49,7 @@
       <span class="label">RSS</span>
     </a>
   </li>
+  {% endif %}
 
   {% if site.social.mail %}
   <!-- Email -->
