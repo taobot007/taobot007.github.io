@@ -1,7 +1,7 @@
 ---
 layout: post
-title: 是什么造就了容器技术
-date: 2016-03-15
+title: 认识容器技术背后的namesapce和cgroup
+date: 2017-09-12
 tag: MicroService
 ---
 
@@ -231,5 +231,3 @@ dev@ubuntu:~/cgroup/demo/test$ sudo sh -c 'echo 1421 > cgroup.procs'
 * https://www.infoq.cn/article/docker-kernel-knowledge-namespace-resource-isolation
 * https://www.infoq.cn/article/docker-kernel-knowledge-cgroups-resource-isolation
 * https://segmentfault.com/a/1190000006917884
-
-
