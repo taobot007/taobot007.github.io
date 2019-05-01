@@ -30,7 +30,10 @@ nav:
     # - {title: About me, description: about, url: '/about'}
 
 # Pagination
-plugins: [jekyll-paginate]
+plugins:
+    - jekyll-paginate
+    - jekyll-seo-tag
+
 paginate: 10
 paginate_path: "page/:num/"
 
