@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 认识容器技术背后的namesapce和cgroup
+title: 认识容器技术背后的namespace和cgroup
 date: 2017-09-12
 tag: MicroService
 ---
@@ -72,17 +72,17 @@ cgroups技术不仅可以限制被 namespace 隔离起来的资源，还可以�
 1. **task（任务）**：cgroups 的术语中，task 就表示系统的一个进程。
 2. **cgroup（控制组）**：cgroups 中的资源控制都以 cgroup 为单位实现。cgroup 表示按某种资源控制标准划分而成的任务组，包含一个或多个**子系统**。一个任务可以加入某个 cgroup，也可以从某个 cgroup 迁移到另外一个 cgroup。
 3. **subsystem（子系统）**：cgroups 中的 subsystem 就是一个资源调度控制器（Resource Controller）。比如 CPU 子系统可以控制 CPU 时间分配，内存子系统可以限制 cgroup 内存使用量。
-
     典型的子系统介绍如下：
-    cpu 子系统，主要限制进程的 cpu 使用率。
-    cpuacct 子系统，可以统计 cgroups 中的进程的 cpu 使用报告。
-    cpuset 子系统，可以为 cgroups 中的进程分配单独的 cpu 节点或者内存节点。
-    memory 子系统，可以限制进程的 memory 使用量。
-    blkio 子系统，可以限制进程的块设备 io。
-    devices 子系统，可以控制进程能够访问某些设备。
-    net_cls 子系统，可以标记 cgroups 中进程的网络数据包，然后可以使用 tc 模块（traffic control）对数据包进行控制。
-    freezer 子系统，可以挂起或者恢复 cgroups 中的进程。
-    ...
+    * cpu 子系统，主要限制进程的 cpu 使用率。
+    * cpuacct 子系统，可以统计 cgroups 中的进程的 cpu 使用报告。
+    * cpuset 子系统，可以为 cgroups 中的进程分配单独的 cpu 节点或者内存节点。
+    * memory 子系统，可以限制进程的 memory 使用量。
+    * blkio 子系统，可以限制进程的块设备 io。
+    * devices 子系统，可以控制进程能够访问某些设备。
+    * net_cls 子系统，可以标记 cgroups 中进程的网络数据包，然后可以使用 tc 模块（traffic control）对数据包进行控制。
+    * freezer 子系统，可以挂起或者恢复 cgroups 中的进程。
+    * ...
+
 
 4. **hierarchy（层级树）**: 一个hierarchy可以理解为一棵**cgroup树**，树的每个节点就是一个进程组，每棵树都会与零到多个subsystem关联。在一颗树里面，每个进程只能属于一个节点（进程组）。系统中可以有很多颗cgroup树，每棵树都和不同的subsystem关联，一个进程可以属于多颗树，即一个进程可以属于多个进程组，只是这些进程组和不同的subsystem关联。目前Linux支持12种subsystem，如果不考虑不与任何subsystem关联的情况（systemd就属于这种情况)。
 
