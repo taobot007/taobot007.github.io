@@ -52,5 +52,5 @@ social:
 
 # Google Analytics
 ga:
-    # id: your_ga_id
-    # host: your_host
+    id: UA-43166551-1
+    host: my_blog
