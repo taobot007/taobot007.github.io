@@ -54,8 +54,3 @@ social:
 ga:
     id: UA-43166551-1
     host: my_blog
-
-axn_tight_df = source_df.select([ c for c in ['country_cd', 'zip_5_cd', 'lst_5_pri_str_id', 'fst_3_str_nm', 'fst_2_unit_id', 'pos_4_5_str_nm', 'count_buids_per_key', 'buid')
-axn_loose_new = axn_tight_df.dripDuplicates()
-print("original anx_loose count")
-print(axn_loose_new.count())
