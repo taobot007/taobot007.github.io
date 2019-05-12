@@ -110,6 +110,14 @@ Let's see what they are and their functionalities.
 
     Cassadra does not work the same way mySql works. Keep this in mind, if you find sth working in sql but not in cql, don't be surprised, google it :>
 
+## The time out error we encountered when reading
+
+After loading data into Cassandra, we want to count the records in one of the tables to make sure all data has been loaded. We used Spark to read the data out as a Dataframe and do a count on it. The problem we met is that when reading the data, we got this error:
+
+```
+py4j.protocol.Py4JJavaError: An error occurred while calling o125.count.
+: org.apache.spark.SparkException: Job aborted due to stage failure: Task 215 in stage 23.0 failed 10 times, most recent failure: Lost task 215.9 in stage 23.0 (TID 28322, 10.249.195.40, executor 39): java.io.IOException: Exception during execution of SELECT count(*) FROM "us"."buid_eid_0dot7" WHERE token("buid") > ? AND token("buid") <= ?   ALLOW FILTERING: Cassandra timeout during read query at consistency LOCAL_ONE (1 responses were required but only 0 replica responded)
+```
 
 ----------------------
 reference
