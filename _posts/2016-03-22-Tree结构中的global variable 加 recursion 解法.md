@@ -10,7 +10,7 @@ tag: Leetcode
 有一类问题,从左右子树传回的值不一定是最终的结果,而是某种状态.这样的题,我们可以用设立global variable加上 recursion的方法来做.
 
 
-###### 968 Binary Tree Camera
+##### 968 Binary Tree Camera
 > 大意: 一个节点上camera可以监视父节点,本节点,及子节点,问一个tree中最少需要多少个camera可以监视所有node?
 
 ```python
@@ -22,7 +22,7 @@ tag: Leetcode
 
 Traversal 问题主要有三种: pre_order, in_order, 和 post_order.当然还有小部分题型是关于level traversal及其它traversal order的.我们主要看这三大种.对于这几种traversal,我觉得最重要要记住的是,采用recursion的思想,建立一个global variable, 随着节点的traversal变化而被改变,同时父节点不要管子节点是如何实现的,只要管好自己就好了.我们来看几题.
 
-###### 230 Kth Smallest Element in a BST
+##### 230 Kth Smallest Element in a BST
 > 大意: 找出一个BST中第k小的数字.
 
 解答: 我们可以用in_order traversal 把所有的顺序找出来,但是这种效率不太高,尤其是如果需要更新node的时候.我们采用DFS的思想来解答这题.
