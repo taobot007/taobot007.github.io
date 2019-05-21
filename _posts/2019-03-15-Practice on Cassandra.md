@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Practice on Cassandra
-date: 2018-03-15
+date: 2019-03-15
 tag: Distributed System
 ---
 
