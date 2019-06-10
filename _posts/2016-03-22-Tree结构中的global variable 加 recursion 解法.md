@@ -7,14 +7,38 @@ tag: Leetcode
 
 ### 左右子树问题
 
-有一类问题,从左右子树传回的值不一定是最终的结果,而是某种状态.这样的题,我们可以用设立global variable加上 recursion的方法来做.
+有一类问题,从左右子树传回的值不一定是最终的结果,而是某种状态.这样的题,我们可以用设立global variable加上 recursion的方法做.
 
 
 ##### 968 Binary Tree Camera
 > 大意: 一个节点上camera可以监视父节点,本节点,及子节点,问一个tree中最少需要多少个camera可以监视所有node?
 
+这里其实用的是greedy的方式,即对于叶节点的上一层节点放上camera.
 ```python
+class Solution(object):
+    def minCameraCover(self, root):
+        # 0 means not covered by camera
+        # 1 means covered by camera but not the node with camera
+        # 2 means with the camera
+        ans = [0]
 
+        if self.helper(root, ans) == 0:
+            ans[0] = ans[0] + 1
+
+        return ans[0]
+
+    def helper(self, root, ans):
+        if not root:
+            return 1
+
+        l = self.helper(root.left, ans)
+        r = self.helper(root.right, ans)
+        if l == 0 or r == 0:
+            ans[0] = ans[0] + 1
+            return 2
+        if l == 2 or r == 2:
+            return 1
+        return 0
 
 ```
 
