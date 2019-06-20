@@ -116,10 +116,17 @@ After loading data into Cassandra, we want to count the records in one of the ta
 
 ```
 py4j.protocol.Py4JJavaError: An error occurred while calling o125.count.
-: org.apache.spark.SparkException: Job aborted due to stage failure: Task 215 in stage 23.0 failed 10 times, most recent failure: Lost task 215.9 in stage 23.0 (TID 28322, 10.249.195.40, executor 39): java.io.IOException: Exception during execution of SELECT count(*) FROM "us"."buid_eid_0dot7" WHERE token("buid") > ? AND token("buid") <= ?   ALLOW FILTERING: Cassandra timeout during read query at consistency LOCAL_ONE (1 responses were required but only 0 replica responded)
+: org.apache.spark.SparkException: Job aborted due to stage failure: Task 215 in stage 23.0 failed 10 times,
+most recent failure: Lost task 215.9 in stage 23.0 (TID 28322, 10.249.195.40, executor 39):
+java.io.IOException: Exception during execution of SELECT count(*) FROM "us"."buid_eid_0dot7" WHERE
+token("buid") > ? AND token("buid") <= ?   ALLOW FILTERING: Cassandra timeout during read query at
+consistency LOCAL_ONE (1 responses were required but only 0 replica responded)
 ```
 
-Don't exactly why this happened. My guess is that the table contains too many columns that Spark could not read the whole table before timing out. I later use another method to get the count, which is to "copy" the whole table to NULL. After copying, the log will also tell me how many rows have been copied.
+Don't know exactly why this happened. My guess is that the table contains too many columns that Spark could not read the whole table before timing out. I later use another method to get the count, which is to "copy" the whole table to NULL. After copying, the log will also tell me how many rows have been copied.
+
+
+
 ----------------------
 reference
 
