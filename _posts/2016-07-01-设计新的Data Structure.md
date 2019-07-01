@@ -27,4 +27,111 @@ tag: Leetcode
 
 建立一个双向链表，并记录链表长度，以及使用hashmap记录值到node的关系。当链表达到最大长度时，如果再来一个新的node，则将其放入链表最前的位置，记录到hashmap中，并从链表中pop出链表最后为止的node；如果不是新的node，则找到值所对应的node，讲其移到第一位即可。
 
+###### 5 Serialize and Deserialize N-ary Tree
+> 如何序列化和反序列化一个N-ary tree ?
 
+使用#来标注最后的child已经被处理了.和trie tree的思路是一样的.而且使用的是preorder的方式来serialize.
+
+而deserialize 就用的是deque了当遇到#时,就pop,然后把最后的那个元素的children后边加上下一个遇到的元素.
+
+```
+class Codec:
+    def serialize(self, root):
+        serial = []
+
+        def preorder(node):
+
+            if not node:
+                return
+
+            serial.append(str(node.val))
+
+            for child in node.children:
+                preorder(child)
+
+            serial.append("#")      # indicates no more children, continue serialization from parent
+
+        preorder(root)
+        return " ".join(serial)
+
+    def deserialize(self, data):
+        if not data:
+            return None
+
+        tokens = deque(data.split())
+        root = Node(int(tokens.popleft()), [])
+
+        def helper(node):
+
+            if not tokens:
+                return
+
+            while tokens[0] != "#": # add child nodes with subtrees
+                value = tokens.popleft()
+                child = Node(int(value), [])
+                node.children.append(child)
+                helper(child)
+
+            tokens.popleft()        # discard the "#"
+
+        helper(root)
+        return root
+```
+
+###### 6 设计一个Data Structure 使得insert, delete和getrandome的时间都是O(1).
+
+思路: 设计一个array,一个map, array用来store values, map 用来map一个int到storage上.
+
+insert就是把值放到array的最后.
+
+remove就是把找到的那个值和array的最后的那个值互换,更新map,并删去.
+
+getrandom就是在array中随机找一个数.
+
+```
+import random
+
+class RandomizedSet(object):
+
+    def __init__(self):
+        self.nums, self.pos = [], {}
+
+    def insert(self, val):
+        if val not in self.pos:
+            self.nums.append(val)
+            self.pos[val] = len(self.nums) - 1
+            return True
+        return False
+
+
+    def remove(self, val):
+        if val in self.pos:
+            idx, last = self.pos[val], self.nums[-1]
+            self.nums[idx], self.pos[last] = last, idx
+            self.nums.pop(); self.pos.pop(val, 0)
+            return True
+        return False
+
+    def getRandom(self):
+        return self.nums[random.randint(0, len(self.nums) - 1)]
+```
+
+###### 7 设计一个frequency stack,每次pop出来的是frequency最大的那个.
+class FreqStack(object):
+
+    def __init__(self):
+        self.q = []
+        self.sc = {}
+        self.mark = 0             <- mark用来表示输入的顺序大小.
+        import heapq
+        heapq.heapify(self.q)
+
+    def push(self, x):
+        self.sc[x] = self.sc.get(x, 0) + 1
+        heapq.heappush(self.q, [-self.sc[x], -self.mark, x])
+        self.mark += 1      
+
+    def pop(self):
+        x = heapq.heappop(self.q)
+        self.sc[x[2]] -= 1
+        return x[2]
