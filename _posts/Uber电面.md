@@ -99,3 +99,10 @@ class Solution(object):
         visit('JFK')
         return route[::-1]
 ```
+
+### 2D array, black and white blocks. Only white blocks 可以走。
+给两个点，求从一个点到另一个点的path。followup：求最短的那条path
+
+### 利特口的 岛的个数 + test cases+ followup 岛形状的个数所有代码都要run结果
+
+###
