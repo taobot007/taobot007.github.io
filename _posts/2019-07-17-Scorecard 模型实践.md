@@ -195,6 +195,10 @@ I will share 3 Feature selection techniques that are easy to use and also gives 
 
 8. 同时，我要对bad rate进行一个时间上对分析，看看有没有什么问题。
 
+### Behavior:
+
+1. 做model的同时开始建立ppt，用来向manager汇报用。
+
 --------------
 Reference:
 
