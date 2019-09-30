@@ -159,6 +159,47 @@ KS的score计算步骤如下：
     2. 计算每个评分区间的累计好账户数占总好账户数比率(good%)和累计坏账户数占总坏账户数比率(bad%)。
     3. 计算每个评分区间累计坏账户占比与累计好账户占比差的绝对值（累计good%-累计bad%），然后对这些绝对值取最大值即得此评分卡的KS值。
 
+或者一句话： KS score 是 真阳率 - 假阳率 （ TPR - FPR ）
+
+### ROC 曲线
+
+接收者操作特征曲线（receiver operating characteristic curve，或者叫ROC曲线）是一种坐标图式的分析工具，用于 (1) 选择最佳的信号侦测模型、舍弃次佳的模型。 (2) 在同一模型中设定最佳阈值。
+
+ROC曲线首先是由二战中的电子工程师和雷达工程师发明的，用来侦测战场上的敌军载具（飞机、船舰），也就是信号检测理论。
+
+ROC分析的是二元分类模型，也就是输出结果只有两种类别的模型，例如：（阳性／阴性）。
+
+ROC空间将伪阳性率（FPR）定义为 X 轴，真阳性率（TPR）定义为 Y 轴。
+
+TPR：在所有实际为阳性的样本中，被正确地判断为阳性之比率。
+
+TPR=TP/(TP+FN)
+
+FPR：在所有实际为阴性的样本中，被错误地判断为阳性之比率。
+
+FPR=FP/(FP+TN)
+
+给定一个二元分类模型和它的阈值，就能从所有样本的（阳性／阴性）真实值和预测值计算出一个 (X=FPR, Y=TPR) 座标点。
+
+用图形的方式来理解：
+
+![ROC](/assets/images/ROC_curves.png)
+
+从图中我们可以看出来，一个feature能不能很好地把P和N的distribution分开。如果P和N的distribution在feature轴上分得很开，那么ROC的曲线肯定离中线很远，如果不能，即P和N的distribution基本是重合的，那么ROC的曲线就和中线重合了。
+
+而且 ROC 曲线不一定在中线上方，如果对于一个feature轴，P在轴的左边，N在轴的右边，那么ROC曲线就在中线下方，意味着feature和tag负相关。
+
+### ROC 与 KS score的关系
+
+KS = max(abs(TPR - FPR))
+
+而 ROC = TPR = f(FPR)
+
+中线上： g(FPR) = FPR
+
+那么 KS = max(abs（TPR - FPR) = max(abs(ROC - g(FPR))) 即 KS值就是ROC曲线与中线的最大差值。
+
+
 ### Feature Selection
 
 I will share 3 Feature selection techniques that are easy to use and also gives good results.
@@ -173,11 +214,11 @@ I will share 3 Feature selection techniques that are easy to use and also gives 
 
 1. Observation Date: 指的是开始观察对时间。所有对attribute都是在这个时间之前对信息，而tag是这个时间之后的预测，比如说这个日期之后的十二个月。
 
-2.
+2. We divide the data into 4 data sets: Training, In-Time Testing, Out-of-Time Testing, and Holdout. Training is easy to understand. Holdout is the final performance checking process. (Outsiders usually call this one Testing). Why do we want In-Time Testing and Out-Time Testing? Because it is possible that training gives 50 KS, in-time testing gives 51 KS and out of time testing gives 23 KS. That means out model is not overfitting, however there is some time variable hidden in the dataset. We need to look deeper into the dataset.
 
 ## 我的实践
 
-### 从XX team拿到数据之后，我接到的任务是“study the data”.着是个很模糊的任务。我做了一下几点：
+### 从XX team拿到数据之后，我接到的任务是“study the data”.这是个很模糊的任务。我做了以下的步骤：
 
 1. 查看了datafram的shape，有多少列，多少行
 
@@ -189,15 +230,49 @@ I will share 3 Feature selection techniques that are easy to use and also gives 
 
 5. 在这个过程中，我发现这个dataset有5000多个attribute，一个一个解读它们将是非常繁重的工作。所以我把它们归成几十个大类，聚焦打击范围
 
-6. 而record共有2million个，对于我拥有的资源来说，数量偏大。我采用了别人的建议，抽取了百分之五的样本。这样计算就快捷多了。
+6. 而record共有2million个，对于我拥有的资源来说，数量偏大。我采用了XXX的建议，抽取了百分之五的样本。这样计算就快捷多了。
 
 7. 根据XXX的建议，我要对每个attribute计算出KS score。然后按照score从大到小排列attribute，并选取其中的几百至一千多个进行更深的分析。
 
-8. 同时，我要对bad rate进行一个时间上对分析，看看有没有什么问题。
+8. 同时，我要对bad rate进行一个时间上对分析，看看有没有什么问题。这个时间是observation date,而tag是一年之后会产生的。
+
+9. XXX 部门告诉我们他们给这些data分了segmentation，所以我对每个segmentation也做了bad rate 在时间上的分析。 对于大多数的segmentation， bad rate越靠近结束越低，这是正常的，因为还没有产生违约。对于 Seg 1 & 2 的用户，他们是已经有违约的人员，他们的bad rate 走势正常。而seg 3-10 的用户，他们是没有发现任何违约的人，所以到结束的时间点，他们不可能一下子产生3个月的违约，但是他们的bad rate并没有drop to 0 in May 2019，而我们知道这些data是 June 2019 整理的，所以这是有问题的。可能会有target leak的问题产生。这是我们看到的第一个问题。这个问题至今没有很好的答复。我们向他们要了trade data，但是还没有回应。
+
+10. 第二问题是，seg 11的用户，所有的bad rate都是0。这点我们也问了，没有得到很好的解释。
+
+11. 后来他们告诉我们，trainning data time range is April 2017 to March 2017 and validation date is April 2017 to June 2017. 我们看了一眼各个seg上的bad rate，是stable的。所以9，10中的问题我们没有追究下去。
+
+12. 他们还给我们几个版本的data dictionary， 用来描述每个field是什么意思，能不能用。我们向他们要每个variable的special values和value range，因为这对于我们建立模型很重要。他们至今未给。
+
+13. 我们looked into validation data set. 依旧是看了以下几点： 1） population in each segmentation； 2) bad rate over time in each segmentation；
+
+14. 我们发现了validation data 的几个问题： 1）positive population只占了总 population 的 6%。这虽然与实际情况相近，但是因为我们model的卖点是能很好地handle positive data，所以我们认为validation population里边应该有更多的positive data； 2） 每个segmentation的sample都是random selected的，当数量很大时问题不大，但是当数量比较小时有可能出问题，比如说我们看到的bad rate over time 很不稳定，所以我们要求他们重新做sampling，用straitified sampling 的方式来做。
+
+15. 对negative data 建模时，因为我先采用当是boost decision tree的方法，boost decision tree 不需要分segmentation，所以我就把所有的training data 一起放入了。我选择了over all top 300 variables，train好了后发现ks score在每个seg上的表现不一，有的超过80，有的是零，这种情况下，这个model是完全不能用的。
+
+16. XXX建议，我们先看对于每个seg，所有variable的ks是怎样分布的。我做了这么一张表，发现对于前300个overall top variable，他们的ks在前几个seg上表现很好，但是在其它的seg上表现得很不好。这意味这如果只选前300个overall top variables，会产生不平衡的问题。XXX建议我，选300个overall top ks variable的同时，再在每个seg里选前50个top ks variables放入model，用来保证平衡性。
+
+17. 于此同时，我check了之前他们建立的模型对negative data的表现。我发现他们的模型对于每个seg，ks值都是相对稳定的，在20-30之间。我的模型确实问题很大。
+
+18. 从16的建议出发，我对比了几个模型： 在seg 1， 2 上选前2000个feature，在1，2上训练；在seg 3， 4 上选前200个feature， 在3， 4上训练。。。。最终我发现，如果我在全部的population上每个seg选200个feature，并在全部的population上训练，得出的结果是最好的。
+
+19. 09/11 我们得到了他们的最新model，但是似乎问题很大，最大的问题是，他们的evalation是在client data上，但并没有分client，这样的话，没法满足不同用户的需求。
+
+20. 09/13 XXX 建议我们了解每个用户代码到底是什么意思。他是客户导向的，我们的model最终是要卖给客户的，所以了解我们的客户，哪些是重要的，哪些不是的，对于我们评估model的performance是非常critical的。
+
+21. 09/18 我发现对于某些client，他们的client tag和 我们公司定义的tag 出入很大。用crosstab就可以看出来。
+
+22.
 
 ### Behavior:
 
 1. 做model的同时开始建立ppt，用来向manager汇报用。
+
+2. 活儿要在保证准确性的前提下快快做，尤其是跟大老板一起干活的时候。
+
+3. 不会就问。
+
+4. 每次提交数据要有深度分析。
 
 --------------
 Reference:
