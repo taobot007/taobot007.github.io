@@ -262,7 +262,17 @@ I will share 3 Feature selection techniques that are easy to use and also gives 
 
 21. 09/18 我发现对于某些client，他们的client tag和 我们公司定义的tag 出入很大。用crosstab就可以看出来。
 
-22.
+22. 运用univariate分析，看到tag在某些feature上随着feature score的变化。tag和有些feature，在client上的相关性方向与在training data上的相关性方向是相反的。这就解释了为什么model在client XXX上的表现远低于custom model。
+
+22. 09/25 XXX 又提出一个建议，即选择那些在client和在training data中和tag相关性一致的feature来train model。这又细分成两种方式，一是选择两者KS之积最大的那些feature，二是选择在client上KS最高同时这些KS的方向和在training data上一致的feature。两种我都试过了，好像没有太大区别。
+
+23. 10/02 XX 部门发送了新的evaluation数据给我们，并且还给了他们的model在这些数据上的performance。我们的工作重点变成了用他们的model来复制结果以确保我们使用的是同样的evaluation data。
+
+24. 10/16 XX 部门的用来evaluate的data的filter方式有错。我们给他们提出了这个问题但是他们没有回复。
+
+25. 10/21 Boss决定不等XX部门了，我们自己来调试model，兵分两路：一个用传统的scorecard，一个是xgb. 先找upper bond，即数据在xgb的holdout中训练和测试，来看看我们最好的表现；再找lower bond，看看在scorecard中，使用XX 部门给定的feature，能作出什么样的结果。
+
+26.10/23 做scordcard时候，constraints都是自己设置的，一个一个看feature，然后根据domain kownledge决定应该的direction。
 
 ### Behavior:
 
@@ -273,6 +283,8 @@ I will share 3 Feature selection techniques that are easy to use and also gives 
 3. 不会就问。
 
 4. 每次提交数据要有深度分析。
+
+5. 写信的时候要给别人credit，如果不能的话也不要有指责之意。尽量换一种表示方式，使得manager知道发生了什么同时也不会对别人产生不好的影响。
 
 --------------
 Reference:
