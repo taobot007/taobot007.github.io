@@ -272,7 +272,9 @@ I will share 3 Feature selection techniques that are easy to use and also gives 
 
 25. 10/21 Boss决定不等XX部门了，我们自己来调试model，兵分两路：一个用传统的scorecard，一个是xgb. 先找upper bond，即数据在xgb的holdout中训练和测试，来看看我们最好的表现；再找lower bond，看看在scorecard中，使用XX 部门给定的feature，能作出什么样的结果。
 
-26.10/23 做scordcard时候，constraints都是自己设置的，一个一个看feature，然后根据domain kownledge决定应该的direction。
+26. 10/23 做scordcard时候，constraints都是自己设置的，一个一个看feature，然后根据domain kownledge决定应该的direction。
+
+27. 10/29 我们进行了改进，将training data中的seg 1 和 seg 2 根据 holdout data中的比例进行了reweight，结果更好了，即使我们的model是boost decision tree
 
 ### Behavior:
 
@@ -285,6 +287,8 @@ I will share 3 Feature selection techniques that are easy to use and also gives 
 4. 每次提交数据要有深度分析。
 
 5. 写信的时候要给别人credit，如果不能的话也不要有指责之意。尽量换一种表示方式，使得manager知道发生了什么同时也不会对别人产生不好的影响。
+
+6. 写presentation第一页，介绍team，给别人credit。
 
 --------------
 Reference:
