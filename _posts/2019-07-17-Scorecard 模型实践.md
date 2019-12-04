@@ -276,11 +276,21 @@ I will share 3 Feature selection techniques that are easy to use and also gives 
 
 27. 10/29 我们进行了改进，将training data中的seg 1 和 seg 2 根据 holdout data中的比例进行了reweight，结果更好了，即使我们的model是boost decision tree
 
+28. 11/02 我们分析了training dataset的tag和holdout dataset的tag，发现它们的差异实在太大，这解释了为什么在holdout上train出来的model和在training上t
+rain出来的model性能相差如此之大。
+
+29. 11/04 我们建立了一个tag consistency model，先在holdout data 上训练出来，再apply到training dataset上。对于得到低分的那些training records，我们就排除它们，然后再重新训练model。这下得出的model，表现好多了。
+
+30. 11/05 我们试了不同的cutoff points，找出一个表现最好的。有人又提出，这么直接地exclude一些点，似乎不是好的方式。更好的方法是downgrade them而不是把它们挖掉。我试了downgrade，从0.01到0.9，找到最好的点。
+
+31. 11/06 有人又提出，如果能训练一个decision tree并把其转换为几条甚至一条rule，就避免了别人说我们用了client data中的数据而产生leak的问题。我试了decision tree，把它plot成树图并选择了要downgrade的分支。最终结果挺好的。
+
+
 ### Behavior:
 
 1. 做model的同时开始建立ppt，用来向manager汇报用。
 
-2. 活儿要在保证准确性的前提下快快做，尤其是跟大老板一起干活的时候。
+2. 活儿要在保证准确性的前提下快快做，尤其是跟老板一起干活的时候。
 
 3. 不会就问。
 
@@ -289,6 +299,10 @@ I will share 3 Feature selection techniques that are easy to use and also gives 
 5. 写信的时候要给别人credit，如果不能的话也不要有指责之意。尽量换一种表示方式，使得manager知道发生了什么同时也不会对别人产生不好的影响。
 
 6. 写presentation第一页，介绍team，给别人credit。
+
+7. 写presentation第二页，直接讲成果，简答粗暴有效。然后下边再循序渐进讲怎么做的。
+
+8.
 
 --------------
 Reference:
